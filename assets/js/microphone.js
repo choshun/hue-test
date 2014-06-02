@@ -22,12 +22,16 @@ var HueLight = function(params) {
 
 	function changeLight(state, amplitude, forceUpdate) {
 		var delta = Math.abs(previousValue - amplitude),
-			THRESHOLD = 0.3;
+			THRESHOLD = 0.5;
 
 		// console.log("delta: ", delta, " threshold: ", THRESHOLD);
 		lightData.on = state;
+		lightData.transitiontime = 2;
 
 		if( delta > THRESHOLD || forceUpdate === true) {
+			console.clear();
+			console.log('CHANGE STATE');
+
 			if( forceUpdate ) {
 				lightData.hue = parseInt(MAX_VALUE * RESTING_STATE, 10);
 				lightData.bri = parseInt(100, 10);
@@ -57,10 +61,8 @@ var HueLight = function(params) {
 
 	function setChangeTimeout() {
 		changeTimeout = setTimeout(function() {
-			console.clear();
-			console.log('GO BACK TO RESTING STATE');
 			gotoRestingState();
-		}, 300);
+		}, 5000);
 	}
 
 	function gotoRestingState() {
