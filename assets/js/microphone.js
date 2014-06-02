@@ -12,32 +12,8 @@ navigator.webkitGetUserMedia({audio: true}, function(stream) {
 	levelChecker.connect(context.destination);
 
 	levelChecker.onaudioprocess = window.audioProcess = function(e) {
-		var buffer = e.inputBuffer.getChannelData(0);
-
-		var maxVal = 0;
+		var maxVal = getAmplitude(e);
 		
-		for (var i = 0; i < buffer.length; i++) {
-			if (maxVal < buffer[i]) {
-				maxVal = buffer[i];
-			}
-		}
-
-		// if(maxVal <= 0.01){
-		//     console.log(0.0);
-		// } else if(maxVal > 1){
-		//     console.log(1);
-		// } else if(maxVal > 0.2){
-		//     console.log(0.2);
-		// } else if(maxVal > 0.1){
-		//     console.log(0.1);
-		// } else if(maxVal > 0.05){
-		//     console.log(0.05);
-		// } else if(maxVal > 0.025){
-		//     console.log(0.025);
-		// } else if(maxVal > 0.01){
-		//     console.log(0.01);
-		// }
-
 		if (maxVal <= 0.1) {
 			changeLight('off', maxVal);
 		} else {
@@ -45,6 +21,19 @@ navigator.webkitGetUserMedia({audio: true}, function(stream) {
 		}
 	};
 });
+
+function getAmplitude(e) {
+	var buffer = e.inputBuffer.getChannelData(0),
+		maxVal = 0;
+	
+	for (var i = 0; i < buffer.length; i++) {
+		if (maxVal < buffer[i]) {
+			maxVal = buffer[i];
+		}
+	}
+
+	return maxVal;
+}
 
 function changeLight(state, maxVal) {
 	var lightData = {
