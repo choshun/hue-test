@@ -8,10 +8,7 @@ $(function() {
 			var amplitude = mic.getAmplitude(e),
 				lightOn = true;
 
-			console.log(amplitude);
-			// var lightOn = (amplitude >= 0.2) ? true : false;
-
-			light1.changeLight(lightOn, amplitude);	
+			light1.changeLight(lightOn, amplitude);
 		}
 	});
 });
